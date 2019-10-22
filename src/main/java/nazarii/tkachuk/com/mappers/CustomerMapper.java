@@ -1,6 +1,6 @@
-package com.mappers;
+package nazarii.tkachuk.com.mappers;
 
-import com.entities.Customer;
+import nazarii.tkachuk.com.entities.Customer;
 
 public class CustomerMapper implements CSVMapper<Customer> {
 

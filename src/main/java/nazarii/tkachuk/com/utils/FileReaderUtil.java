@@ -1,7 +1,8 @@
-package com.utils;
+package nazarii.tkachuk.com.utils;
 
-import com.entities.CSVSerializable;
-import com.mappers.CSVMapper;
+import nazarii.tkachuk.com.entities.CSVSerializable;
+import nazarii.tkachuk.com.mappers.CSVMapper;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;

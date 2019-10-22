@@ -1,4 +1,4 @@
-package com.utils;
+package nazarii.tkachuk.com.utils;
 
 public final class ValidatorUtil {
     private ValidatorUtil() {throw new UnsupportedOperationException(); }

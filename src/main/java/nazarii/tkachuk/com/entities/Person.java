@@ -1,4 +1,4 @@
-package com.entities;
+package nazarii.tkachuk.com.entities;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
-package com.entities;
+package nazarii.tkachuk.com.entities;
 
-import com.enums.CSVFormats;
+import nazarii.tkachuk.com.enums.CSVFormats;
 import java.math.BigDecimal;
 
 public class Product extends Nameble implements CSVSerializable {

@@ -1,4 +1,4 @@
-package com.entities;
+package nazarii.tkachuk.com.entities;
 
 public abstract class EntityID implements CSVSerializable{
     protected Integer id;

@@ -1,4 +1,4 @@
-package com.enums;
+package nazarii.tkachuk.com.enums;
 
 public enum CSVFormats {
 

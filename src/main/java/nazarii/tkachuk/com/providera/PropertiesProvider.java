@@ -1,4 +1,4 @@
-package com.providera;
+package nazarii.tkachuk.com.providera;
 
 import java.util.Properties;
 

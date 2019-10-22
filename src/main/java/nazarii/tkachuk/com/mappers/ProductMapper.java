@@ -1,6 +1,7 @@
-package com.mappers;
+package nazarii.tkachuk.com.mappers;
 
-import com.entities.Product;
+import nazarii.tkachuk.com.entities.Product;
+
 import java.math.BigDecimal;
 
 public class ProductMapper implements CSVMapper<Product> {

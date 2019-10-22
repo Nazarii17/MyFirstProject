@@ -1,11 +1,12 @@
-package com.services;
+package nazarii.tkachuk.com.services;
 
-import com.entities.Customer;
-import com.mappers.CustomerMapper;
-import com.utils.CSVFormatterUtil;
-import com.utils.FileReaderUtil;
-import com.utils.FileWriterUtil;
-import com.utils.ValidatorUtil;
+import nazarii.tkachuk.com.entities.Customer;
+import nazarii.tkachuk.com.mappers.CustomerMapper;
+import nazarii.tkachuk.com.utils.CSVFormatterUtil;
+import nazarii.tkachuk.com.utils.FileReaderUtil;
+import nazarii.tkachuk.com.utils.FileWriterUtil;
+import nazarii.tkachuk.com.utils.ValidatorUtil;
+
 import java.util.List;
 
 public class CustomerService {

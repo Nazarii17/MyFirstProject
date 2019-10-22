@@ -1,6 +1,7 @@
-package com.entities;
+package nazarii.tkachuk.com.entities;
 
-import com.enums.CSVFormats;
+import nazarii.tkachuk.com.enums.CSVFormats;
+
 import java.util.Objects;
 
 public class Customer extends Person implements CSVSerializable {

@@ -1,10 +1,11 @@
-package com.services;
+package nazarii.tkachuk.com.services;
 
-import com.entities.Product;
-import com.mappers.ProductMapper;
-import com.utils.CSVFormatterUtil;
-import com.utils.FileReaderUtil;
-import com.utils.FileWriterUtil;
+import nazarii.tkachuk.com.entities.Product;
+import nazarii.tkachuk.com.mappers.ProductMapper;
+import nazarii.tkachuk.com.utils.CSVFormatterUtil;
+import nazarii.tkachuk.com.utils.FileReaderUtil;
+import nazarii.tkachuk.com.utils.FileWriterUtil;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;

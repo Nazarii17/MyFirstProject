@@ -1,10 +1,11 @@
-package com.services;
+package nazarii.tkachuk.com.services;
 
-import com.entities.EntityID;
-import com.entities.Nameble;
-import com.mappers.CSVMapper;
-import com.utils.FileReaderUtil;
-import com.utils.FileWriterUtil;
+import nazarii.tkachuk.com.entities.EntityID;
+import nazarii.tkachuk.com.entities.Nameble;
+import nazarii.tkachuk.com.mappers.CSVMapper;
+import nazarii.tkachuk.com.utils.FileReaderUtil;
+import nazarii.tkachuk.com.utils.FileWriterUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;

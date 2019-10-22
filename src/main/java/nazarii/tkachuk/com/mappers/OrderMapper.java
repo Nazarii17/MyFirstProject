@@ -1,8 +1,9 @@
-package com.mappers;
+package nazarii.tkachuk.com.mappers;
 
-import com.entities.Customer;
-import com.entities.Order;
-import com.entities.Product;
+import nazarii.tkachuk.com.entities.Customer;
+import nazarii.tkachuk.com.entities.Order;
+import nazarii.tkachuk.com.entities.Product;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

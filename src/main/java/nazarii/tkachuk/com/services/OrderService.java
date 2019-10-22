@@ -1,12 +1,13 @@
-package com.services;
+package nazarii.tkachuk.com.services;
 
-import com.entities.Customer;
-import com.entities.Order;
-import com.entities.Product;
-import com.mappers.OrderMapper;
-import com.utils.CSVFormatterUtil;
-import com.utils.FileReaderUtil;
-import com.utils.FileWriterUtil;
+import nazarii.tkachuk.com.entities.Customer;
+import nazarii.tkachuk.com.entities.Order;
+import nazarii.tkachuk.com.entities.Product;
+import nazarii.tkachuk.com.mappers.OrderMapper;
+import nazarii.tkachuk.com.utils.CSVFormatterUtil;
+import nazarii.tkachuk.com.utils.FileReaderUtil;
+import nazarii.tkachuk.com.utils.FileWriterUtil;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

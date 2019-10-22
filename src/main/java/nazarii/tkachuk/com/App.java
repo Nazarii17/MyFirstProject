@@ -1,9 +1,10 @@
-package com;
+package nazarii.tkachuk.com;
 
-import com.entities.Customer;
-import com.entities.Order;
-import com.entities.Product;
-import com.services.OrderService;
+import nazarii.tkachuk.com.entities.Customer;
+import nazarii.tkachuk.com.entities.Order;
+import nazarii.tkachuk.com.entities.Product;
+import nazarii.tkachuk.com.services.OrderService;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;

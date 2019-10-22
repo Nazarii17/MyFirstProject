@@ -1,6 +1,6 @@
-package com.utils;
+package nazarii.tkachuk.com.utils;
 
-import com.entities.CSVSerializable;
+import nazarii.tkachuk.com.entities.CSVSerializable;
 import java.util.List;
 
 public final class CSVFormatterUtil {
