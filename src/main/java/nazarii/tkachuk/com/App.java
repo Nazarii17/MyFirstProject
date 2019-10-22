@@ -62,33 +62,33 @@ public class App {
         orders.add(order3);
         orders.add(order4);
 
-//        FileWriterUtil.writeTextToFile("products.csv", CSVFormatterUtil.toCSVStringNoFormat(products));
-//        FileWriterUtil.writeTextToFile("orders.csv", CSVFormatterUtil.toCSVStringNoFormat(orders));
-//        FileWriterUtil.writeTextToFile("customers.csv", CSVFormatterUtil.toCSVStringNoFormat(customers));
+        FileWriterUtil.writeTextToFile("products.csv", CSVFormatterUtil.toCSVStringNoFormat(products));
+        FileWriterUtil.writeTextToFile("orders.csv", CSVFormatterUtil.toCSVStringNoFormat(orders));
+        FileWriterUtil.writeTextToFile("customers.csv", CSVFormatterUtil.toCSVStringNoFormat(customers));
 
 
-//        Product newProduct = ProductService.createNewProduct("product.csv","Жорсткезне єбашиво++",
-//                20.40,"Мама мене їбошить");
-//        products.add(newProduct);
-//        FileWriterUtil.writeTextToFile("product.csv", newProduct.toCSVFileString());
-//        Product newProduct1 = ProductService.createNewProduct("products.csv","Коломийський грьоб",
-//                4.40,"Тату мене їбошить");
-//        products.add(newProduct1);
-//        FileWriterUtil.writeTextToFile("products.csv", newProduct1.toCSVFileString());
+        Product newProduct = ProductService.createNewProduct("product.csv","Жорсткезне єбашиво++",
+                20.40,"Мама мене їбошить");
+        products.add(newProduct);
+        FileWriterUtil.writeTextToFile("product.csv", newProduct.toCSVFileString());
+        Product newProduct1 = ProductService.createNewProduct("products.csv","Коломийський грьоб",
+                4.40,"Тату мене їбошить");
+        products.add(newProduct1);
+        FileWriterUtil.writeTextToFile("products.csv", newProduct1.toCSVFileString());
 
 
-//        Order newOrder = OrderService.createNewOrder("orders.csv", 993,11,30,1000,3,5);
-//        orders.add(newOrder);
-//        FileWriterUtil.writeTextToFile("orders.csv",newOrder.toCSVFileString());
+        Order newOrder = OrderService.createNewOrder("orders.csv", 993,11,30,1000,3,5);
+        orders.add(newOrder);
+        FileWriterUtil.writeTextToFile("orders.csv",newOrder.toCSVFileString());
 
 
-//        CustomerService.deleteCustomerByID("customers.csv",7);
-//        CustomerService.editCustomerByID("customers.csv",8,"Nigga", "Corn","981674230" );
-//
-//        Customer newCustomer = CustomerService.createNewCustomer("customers.csv",
-//                "Alah","Babah","981674239");
-//        customers.add(newCustomer);
-//        FileWriterUtil.writeTextToFile("customers.csv", newCustomer.toCSVFileString());
+        CustomerService.deleteCustomerByID("customers.csv",7);
+        CustomerService.editCustomerByID("customers.csv",8,"Nigga", "Corn","981674230" );
+
+        Customer newCustomer = CustomerService.createNewCustomer("customers.csv",
+                "Alah","Babah","981674239");
+        customers.add(newCustomer);
+        FileWriterUtil.writeTextToFile("customers.csv", newCustomer.toCSVFileString());
 
 
     }
