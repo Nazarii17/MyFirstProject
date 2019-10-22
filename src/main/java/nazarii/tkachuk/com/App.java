@@ -60,7 +60,6 @@ public class App {
 
 //        FileWriterUtil.writeTextToFile("orders.csv",CSVFormatterUtil.toCSVStringNoFormat(orders));
 
-
 //        List<Product> productList = FileReaderUtil.readObjects("products.csv", new ProductMapper());
 //
 //        FileWriterUtil.writeTextToFile("products1.csv", CSVFormatterUtil.toCSVStringNoFormat(productList));
