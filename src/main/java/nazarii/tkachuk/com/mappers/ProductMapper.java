@@ -10,8 +10,9 @@ public class ProductMapper implements CSVMapper<Product> {
     public Product mapFromCSV(String s) {
         String[] strings = s.split(",");
 
-        return new Product(strings[0].trim(),
-                Integer.parseInt(strings[1].trim()) ,
+        return new Product(
+                Integer.parseInt(strings[0].trim()) ,
+                strings[1].trim(),
                 BigDecimal.valueOf(Double.parseDouble(strings[2].trim())),
                 strings[3].trim());
     }

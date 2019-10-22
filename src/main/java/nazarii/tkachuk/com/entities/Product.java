@@ -4,8 +4,8 @@ import nazarii.tkachuk.com.enums.CSVFormats;
 import java.math.BigDecimal;
 
 public class Product extends Nameble implements CSVSerializable {
-    private String name;
     private Integer id;
+    private String name;
     private BigDecimal price;
     private String info;
 
@@ -13,10 +13,10 @@ public class Product extends Nameble implements CSVSerializable {
         this.id = id;
     }
 
-    public Product(String name, Integer id, BigDecimal price, String info) {
-        this.name = name;
+    public Product(Integer id, String name, BigDecimal price, String info) {
         this.id = id;
-        this.price = price.setScale(2);
+        this.name = name;
+        this.price = price;
         this.info = info;
     }
 
@@ -55,8 +55,8 @@ public class Product extends Nameble implements CSVSerializable {
     @Override
     public String toString() {
         return "Product{" +
-                "Name = '" + name + '\'' +
-                ", ID of the product = " + id +
+                "ID of the product = " + id +
+                ", Name = '" + name + '\'' +
                 ", Price = " + price + "$" +
                 ", \nInformation: \n'" + info + " '" +
                 '}';
@@ -64,11 +64,11 @@ public class Product extends Nameble implements CSVSerializable {
 
     @Override
     public String toCSVWithFormatString() {
-        return String.format(CSVFormats.PRODUCT.getFormatValue(), name + ",", id + ",", price + ",", info);
+        return String.format(CSVFormats.PRODUCT.getFormatValue(), id + ",", name + ",", price + ",", info);
     }
 
     @Override
     public String toCSVFileString() {
-        return name + "," + id + "," + price + "," + info+"\n";
+        return id + "," + name + "," +  price + "," + info+"\n";
     }
 }

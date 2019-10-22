@@ -61,8 +61,8 @@ public class ProductService {
         EntityIDService.createFileWithMaxID(filePath, new ProductMapper());
 
         return new Product(
-                name,
                 EntityIDService.generateIDFromFile(EntityIDService.getIDFilePath(filePath)),
+                name,
                 new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN),
                 info);
     }
@@ -87,7 +87,7 @@ public class ProductService {
                 throw new RuntimeException("The product \"" + name.toUpperCase() + "\" is exist!!!");
             }
         }
-        productList.set(index, new Product(name, id, new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN), info));
+        productList.set(index, new Product(id, name, new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN), info));
 
         FileWriterUtil.overwriteTextToFile(filePath, CSVFormatterUtil.toCSVStringNoFormat(productList));
     }

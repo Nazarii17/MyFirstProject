@@ -49,14 +49,21 @@ public class CustomerService {
         if (!EntityIDService.isFileExist(filePath)){
             FileWriterUtil.createFileIfNotExists(filePath);
         }
-
-        if ((!ValidatorUtil.validatePhoneNumber(phoneNumber) | isPhoneNumberExist(filePath, phoneNumber))) {
-            throw new RuntimeException("Далбайоб, введи нормальний телефон, гавно ти собаче, щоб тебе качка копнула, сука!!!");
+        if (!ValidatorUtil.validatePhoneNumber(phoneNumber)) {
+            throw new RuntimeException(phoneNumber + " invalid phone number!!!");
+        }
+        if (isPhoneNumberExist(filePath, phoneNumber)) {
+            throw new RuntimeException("Phone number " + phoneNumber + " already exist!!!");
         }
 
         EntityIDService.createFileWithMaxID(filePath, new CustomerMapper());
 
-        return new Customer(firstName, lastName, EntityIDService.generateIDFromFile(EntityIDService.getIDFilePath(filePath)), phoneNumber);
+        return new Customer(
+                EntityIDService.generateIDFromFile(EntityIDService.getIDFilePath(filePath)),
+                firstName,
+                lastName,
+                phoneNumber
+        );
     }
 
     public static void deleteCustomerByID(String filePath, int id) {
@@ -88,7 +95,11 @@ public class CustomerService {
                 throw new RuntimeException("Phone number " + phoneNumber + " already exist!!!");
             }
         }
-        customerList.set(index, new Customer(firstName, lastName, id, phoneNumber));
+        customerList.set(index, new Customer(
+                id,
+                firstName,
+                lastName,
+                phoneNumber));
 
         FileWriterUtil.overwriteTextToFile(filePath, CSVFormatterUtil.toCSVStringNoFormat(customerList));
     }

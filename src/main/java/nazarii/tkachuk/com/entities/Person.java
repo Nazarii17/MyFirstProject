@@ -3,18 +3,18 @@ package nazarii.tkachuk.com.entities;
 import java.util.Objects;
 
 public class Person extends Nameble {
+    protected Integer id;
     protected String name;
     protected String lastName;
-    protected Integer id;
 
     public Person(Integer id) {
         this.id = id;
     }
 
-    public Person(String name, String lastName, Integer id) {
+    public Person(Integer id, String name, String lastName) {
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
-        this.id = id;
     }
 
     public String getName() {
@@ -44,9 +44,9 @@ public class Person extends Nameble {
     @Override
     public String toString() {
         return "Person{" +
-                "first_name='" + name + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 
@@ -55,14 +55,14 @@ public class Person extends Nameble {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return getId() == person.getId() &&
+        return getId().equals(person.getId()) &&
                 getName().equals(person.getName()) &&
                 getLastName().equals(person.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getLastName(), getId());
+        return Objects.hash(getId(), getName(), getLastName());
     }
 
     @Override
