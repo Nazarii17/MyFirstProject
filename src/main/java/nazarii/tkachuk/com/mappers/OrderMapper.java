@@ -20,12 +20,12 @@ public class OrderMapper implements CSVMapper<Order> {
                 Integer.parseInt(stringsDate[2].trim()));
 
         return new Order(
-                Integer.parseInt(strings[0].trim()),
+                Integer.parseInt(strings[0]),
                 date,
-                Integer.parseInt(strings[2].trim()),
-                new Customer(Integer.parseInt(strings[3].trim())),
-                new Product(Integer.parseInt(strings[4].trim())),
-                new BigDecimal(strings[5].trim())
+                Integer.parseInt(strings[2]),
+                new Customer(Integer.parseInt(strings[3])),
+                new Product(Integer.parseInt(strings[4])),
+                new BigDecimal(strings[5])
         );
     }
 }

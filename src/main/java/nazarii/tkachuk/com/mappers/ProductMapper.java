@@ -11,9 +11,9 @@ public class ProductMapper implements CSVMapper<Product> {
         String[] strings = s.split(",");
 
         return new Product(
-                Integer.parseInt(strings[0].trim()) ,
-                strings[1].trim(),
-                BigDecimal.valueOf(Double.parseDouble(strings[2].trim())),
-                strings[3].trim());
+                Integer.parseInt(strings[0]) ,
+                strings[1],
+                BigDecimal.valueOf(Double.parseDouble(strings[2])),
+                strings[3]);
     }
 }

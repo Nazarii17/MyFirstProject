@@ -22,12 +22,12 @@ public final class FileReaderUtil {
         try (Scanner scanner = new Scanner(new FileReader(filepath))) {
             while (scanner.hasNextLine()) {
 
-                strings.add(scanner.nextLine());
+                strings.add(StringUtil.stringTrim(scanner.nextLine()));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+//TYT!!!!!!!
         return convertToObjects(strings, mapper);
     }
 
@@ -39,28 +39,26 @@ public final class FileReaderUtil {
         }
         return list;
     }
-
-    public static String readStringFromFile(String filepath) {
-        List<String> strings = new ArrayList<>();
-        StringBuffer stringBuffer = new StringBuffer();
-        try (Scanner scanner = new Scanner(new FileReader(filepath))) {
-
-            while (scanner.hasNextLine()) {
-                strings.add(scanner.nextLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        for (String s : strings) {
-            stringBuffer.append(s + "\n");
-        }
-
-        return stringBuffer.toString();
-
-    }
-
-    public static List<String> readStringFromFile2(String filepath) {
+//    public static String readStringFromFile(String filepath) {
+//        List<String> strings = new ArrayList<>();
+//        StringBuffer stringBuffer = new StringBuffer();
+//        try (Scanner scanner = new Scanner(new FileReader(filepath))) {
+//
+//            while (scanner.hasNextLine()) {
+//                strings.add(scanner.nextLine());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        for (String s : strings) {
+//            stringBuffer.append(s + "\n");
+//        }
+//
+//        return stringBuffer.toString();
+//
+//    }
+    public static List<String> readStringFromFile(String filepath) {
         List<String> strings = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(new FileReader(filepath))) {
@@ -71,7 +69,6 @@ public final class FileReaderUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return strings;
     }
 }

@@ -129,14 +129,4 @@ public class Order extends EntityID implements CSVSerializable {
     public int hashCode() {
         return Objects.hash(getId(), getOrderDate(), getQuantity(), customerID, productID, price);
     }
-
-    private class DateofOrder {
-        LocalDate localDate;
-        DateTimeFormatter dateTimeFormatter;
-
-        public DateofOrder(LocalDate localDate) {
-            this.localDate = localDate;
-            this.dateTimeFormatter = DateTimeFormatter.ofPattern("MM, dd, YYYY");
-        }
-    }
 }

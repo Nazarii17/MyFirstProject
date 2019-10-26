@@ -3,11 +3,11 @@ package nazarii.tkachuk.com;
 import nazarii.tkachuk.com.entities.Customer;
 import nazarii.tkachuk.com.entities.Order;
 import nazarii.tkachuk.com.entities.Product;
-import nazarii.tkachuk.com.providera.PropertiesProvider;
 import nazarii.tkachuk.com.services.CustomerService;
 import nazarii.tkachuk.com.services.EntityIDService;
 import nazarii.tkachuk.com.services.OrderService;
 import nazarii.tkachuk.com.services.ProductService;
+import nazarii.tkachuk.com.utils.StringUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +23,7 @@ public class App {
         ProductService productService = new ProductService();
         OrderService orderService = new OrderService();
 
-        entityIDService.checkInitialFiles(
+        entityIDService.prepareInitialFiles(
                 customerService.getCUSTOMER_FILE_PATH(),
                 productService.getPRODUCT_FILE_PATH(),
                 orderService.getORDER_FILE_PATH());
@@ -114,10 +114,14 @@ public class App {
 //                "981674111");
 
 //        orderService.createNewOrder(1999,10,31,12,2,2);
-        System.out.println(orderService.getOrdererByDate(1999, 10, 31));
+//        System.out.println(orderService.getOrderByDate(1999, 10, 31));
 
 
-//     orderService.editOrderByID(9,1996,10,15,50,2,2);
+     orderService.editOrderByID(9,1996,10,20,50,2,2);
+//        System.out.println(customerService.getCustomerByID(9));
+
+//        System.out.println(StringUtil.stringTrim("1   ,Mary   ,Bush  ,536546126  "));
+
 
 
 

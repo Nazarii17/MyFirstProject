@@ -58,7 +58,7 @@ public class OrderService {
         return correctOne;
     }
 
-    public Order getOrdererByDate(Integer year, Integer month, Integer day) {
+    public Order getOrderByDate(Integer year, Integer month, Integer day) {
 
         List<Order> orderList = FileReaderUtil.readObjects(ORDER_FILE_PATH, new OrderMapper());
 

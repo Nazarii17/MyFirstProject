@@ -11,7 +11,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EntityIDService {
@@ -32,7 +31,7 @@ public class EntityIDService {
     }
 
     private int generateId(String filePath) {
-        int id = Integer.parseInt(FileReaderUtil.readStringFromFile2(filePath).get(0).trim());
+        int id = Integer.parseInt(FileReaderUtil.readStringFromFile(filePath).get(0).trim());
         final Integer nextId = ++id;
         FileWriterUtil.overwriteTextToFile(filePath, nextId.toString());
         return nextId;
@@ -97,7 +96,7 @@ public class EntityIDService {
         return false;
     }
 
-    public void checkInitialFiles(String customerFilePath, String productFilePath, String orderFilePath){
+    public void prepareInitialFiles(String customerFilePath, String productFilePath, String orderFilePath){
 
         List<String> filePaths = new ArrayList<>();
         filePaths.add(customerFilePath);
@@ -106,7 +105,8 @@ public class EntityIDService {
 
         for (String filePath: filePaths ){
             if(!isFileExist(filePath)){
-                throw new RuntimeException("File \""+ filePath + "\" not found!!!");
+                FileWriterUtil.createFileIfNotExists(filePath);
+//                throw new RuntimeException("File \""+ filePath + "\" not found!!!");
             }
         }
     }

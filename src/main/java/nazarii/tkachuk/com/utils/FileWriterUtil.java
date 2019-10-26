@@ -22,67 +22,7 @@ public final class FileWriterUtil {
         }
         return filePath;
     }
-    //    public void writeToFile(String text) {
-//
-//        FileWriter fileWriter;
-//        BufferedWriter bufferedWriter;
-//        PrintWriter printWriter = null;
-//        try {
-//            fileWriter = new FileWriter(fileURLandName, true);
-//            bufferedWriter = new BufferedWriter(fileWriter);
-//            printWriter = new PrintWriter(bufferedWriter);
-//            printWriter.println(text);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        printWriter.close();
-//    }
-//    public void writeToFile(FileType fileType, Object o, Object[] objects) {
-//        FileWriter fileWriter;
-//        BufferedWriter bufferedWriter;
-//        PrintWriter printWriter = null;
-//        try {
-//
-//            fileWriter = new FileWriter(fileType.fileLocation(fileType), true);
-//            bufferedWriter = new BufferedWriter(fileWriter);
-//            printWriter = new PrintWriter(bufferedWriter);
-//            if (o instanceof Customer) {
-//                printWriter.format(FormatterObjects.customerFormat(), objects);
-//            } else if (o instanceof Product) {
-//                printWriter.format(FormatterObjects.productFormat(), objects);
-//            } else if (o instanceof Order) {
-//                printWriter.format(FormatterObjects.orderFormat(), objects);
-//            } else printWriter.println(o.toString());
-////            Formatter fmtFile;
-////            fmtFile = new Formatter(new FileOutputStream(fileType.fileLocation(fileType)));
-////            fmtFile.format();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        printWriter.close();
-//    }
-//    public void writeToFile(String filePath, List<? extends CSVSerializable> objects, String format) {
-//
-//        try (PrintWriter writer = new PrintWriter(filePath)) {
-//
-//            writer.print(CSVFormatterUtil.toCSVFormattedString(objects, format));
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public void writeToFile(String filePath, String content) {
-//
-//        createFileIfNotExists(filePath);
-//
-//        try (PrintWriter writer = new PrintWriter(filePath)) {
-//
-//            writer.print(content);//format
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
     public static void writeToFile(String filePath, String content) {
 
         createFileIfNotExists(filePath);
