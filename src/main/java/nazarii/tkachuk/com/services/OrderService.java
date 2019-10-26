@@ -18,6 +18,10 @@ public class OrderService {
 
     private final String ORDER_FILE_PATH = "orders.csv";
 
+    public String getORDER_FILE_PATH() {
+        return ORDER_FILE_PATH;
+    }
+
     public OrderService() {
         entityIDService = new EntityIDService(ORDER_FILE_PATH);
     }

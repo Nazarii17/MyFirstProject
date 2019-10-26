@@ -20,6 +20,10 @@ public class ProductService {
         entityIDService = new EntityIDService(PRODUCT_FILE_PATH);
     }
 
+    public String getPRODUCT_FILE_PATH() {
+        return PRODUCT_FILE_PATH;
+    }
+
     public Product getProductById(int id) {
         List<Product> productList = FileReaderUtil.readObjects(PRODUCT_FILE_PATH, new ProductMapper());
 

@@ -15,8 +15,14 @@ public class CustomerService {
 
     private final String CUSTOMER_FILE_PATH = "customers.csv";
 
+
+
     public CustomerService() {
         entityIDService = new EntityIDService(CUSTOMER_FILE_PATH);
+    }
+
+    public String getCUSTOMER_FILE_PATH() {
+        return CUSTOMER_FILE_PATH;
     }
 
     private Boolean isPhoneNumberExist(String phoneNumber) {

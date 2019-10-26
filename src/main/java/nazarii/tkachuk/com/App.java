@@ -15,19 +15,22 @@ import java.time.Month;
 import java.util.ArrayList;
 
 public class App {
-    public static String filePath = "cusomers.csv";
-
 
     public static void main(String[] args) {
 
+        EntityIDService entityIDService = new EntityIDService();
+        CustomerService customerService = new CustomerService();
+        ProductService productService = new ProductService();
+        OrderService orderService = new OrderService();
+
+        entityIDService.checkInitialFiles(
+                customerService.getCUSTOMER_FILE_PATH(),
+                productService.getPRODUCT_FILE_PATH(),
+                orderService.getORDER_FILE_PATH());
 
         ArrayList<Customer> customers = new ArrayList<>();
         ArrayList<Product> products = new ArrayList<>();
         ArrayList<Order> orders = new ArrayList<>();
-
-        CustomerService customerService = new CustomerService();
-        ProductService productService = new ProductService();
-        OrderService orderService = new OrderService();
 
         Customer customer1 = new Customer(1, "Jack", "Bush", "503730412");
         Customer customer2 = new Customer(2, "Mary", "Bush", "536546126");

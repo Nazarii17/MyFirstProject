@@ -19,6 +19,9 @@ public class EntityIDService {
     private String entityFilePath;
     private String entityIdFilePath;
 
+    public EntityIDService() {
+    }
+
     public EntityIDService(String entityFilePath) {
         this.entityFilePath = entityFilePath;
         this.entityIdFilePath = getIDFilePath(entityFilePath);
@@ -92,6 +95,20 @@ public class EntityIDService {
             return true;
         }
         return false;
+    }
+
+    public void checkInitialFiles(String customerFilePath, String productFilePath, String orderFilePath){
+
+        List<String> filePaths = new ArrayList<>();
+        filePaths.add(customerFilePath);
+        filePaths.add(productFilePath);
+        filePaths.add(orderFilePath);
+
+        for (String filePath: filePaths ){
+            if(!isFileExist(filePath)){
+                throw new RuntimeException("File \""+ filePath + "\" not found!!!");
+            }
+        }
     }
 
     public <T extends Order> Boolean isDateExist(List<T> entities, Integer year, Integer month, Integer day){
