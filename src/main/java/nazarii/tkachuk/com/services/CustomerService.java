@@ -11,8 +11,16 @@ import java.util.List;
 
 public class CustomerService {
 
-    public static Boolean isPhoneNumberExist(String filePath, String phoneNumber) {
-        List<Customer> customerList = FileReaderUtil.readObjects(filePath, new CustomerMapper());
+    private EntityIDService entityIDService;
+
+    private final String CUSTOMER_FILE_PATH = "customers.csv";
+
+    public CustomerService() {
+        entityIDService = new EntityIDService(CUSTOMER_FILE_PATH);
+    }
+
+    private Boolean isPhoneNumberExist(String phoneNumber) {
+        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
 
         for (Customer customer : customerList) {
             if (customer.getPhoneNumber().equals(phoneNumber)) {
@@ -22,19 +30,26 @@ public class CustomerService {
         return false;
     }
 
-    public static Customer getCustomerByID(String filePath, int id) {
-        List<Customer> customerList = FileReaderUtil.readObjects(filePath, new CustomerMapper());
-        Customer correctOne = null;
+    public Customer getCustomerByID(int id) {
+        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+
+        if (!entityIDService.isIDExist(customerList,id)){
+            throw new RuntimeException("The customer with ID № \"" + id + "\" isn't exist!!!\"");
+        }
         for (Customer customer : customerList) {
             if (customer.getId() == id) {
-                correctOne = customer;
+                return customer;
             }
         }
-        return correctOne;
+        return null;
     }
 
-    public static Customer getCustomerByPhoneNumber(String filePath, String phoneNumber) {
-        List<Customer> customerList = FileReaderUtil.readObjects(filePath, new CustomerMapper());
+    public Customer getCustomerByPhoneNumber(String phoneNumber) {
+
+        if (!isPhoneNumberExist(phoneNumber)) {
+            throw new RuntimeException("Phone number " + phoneNumber + " isn't exist!!!");
+        }
+        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
         Customer correctOne = null;
         for (Customer customer : customerList) {
             if (customer.getPhoneNumber().equals(phoneNumber)) {
@@ -44,64 +59,80 @@ public class CustomerService {
         return correctOne;
     }
 
-    public static Customer createNewCustomer(String filePath, String firstName, String lastName, String phoneNumber) {
+    public Customer createNewCustomer(String firstName, String lastName, String phoneNumber) {
+        Customer customer = buildNewCustomer(firstName, lastName, phoneNumber);
+        return save(customer);
+    }
 
-        if (!EntityIDService.isFileExist(filePath)){
-            FileWriterUtil.createFileIfNotExists(filePath);
-        }
+    private Customer buildNewCustomer(String firstName, String lastName, String phoneNumber) {
+        validatePhoneNumber(phoneNumber);
+        return new Customer(firstName, lastName, phoneNumber);
+    }
+
+    private void validatePhoneNumber(String phoneNumber) {
         if (!ValidatorUtil.validatePhoneNumber(phoneNumber)) {
             throw new RuntimeException(phoneNumber + " invalid phone number!!!");
         }
-        if (isPhoneNumberExist(filePath, phoneNumber)) {
+        if (isPhoneNumberExist(phoneNumber)) {
             throw new RuntimeException("Phone number " + phoneNumber + " already exist!!!");
         }
-
-        EntityIDService.createFileWithMaxID(filePath, new CustomerMapper());
-
-        return new Customer(
-                EntityIDService.generateIDFromFile(EntityIDService.getIDFilePath(filePath)),
-                firstName,
-                lastName,
-                phoneNumber
-        );
     }
 
-    public static void deleteCustomerByID(String filePath, int id) {
-        List<Customer> customerList = FileReaderUtil.readObjects(filePath, new CustomerMapper());
-        Customer customer = getCustomerByID(filePath, id);
-        customerList.remove(customer);
+    private Customer save(Customer customer) {
+        final int id = entityIDService.generateId();
 
-        FileWriterUtil.overwriteTextToFile(filePath, CSVFormatterUtil.toCSVStringNoFormat(customerList));
+        customer.setId(id);
+
+        FileWriterUtil.writeToFile(CUSTOMER_FILE_PATH, customer.toCSVString());
+
+        return customer;
     }
 
-    public static void editCustomerByID(String filePath, int id, String firstName, String lastName, String phoneNumber) {
-        List<Customer> customerList = FileReaderUtil.readObjects(filePath, new CustomerMapper());
+    public void deleteCustomer(Customer customer) {
+        deleteCustomerByID(customer.getId());
+    }
 
-        if (!ValidatorUtil.validatePhoneNumber(phoneNumber)) {
-            throw new RuntimeException(phoneNumber + " invalid phone number!!!");
+    public void deleteCustomerByID(int id) {
+        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+        if (entityIDService.isIDExist(customerList, id)) {
+            Customer customer = getCustomerByID(id);
+            customerList.remove(customer);
+        } else {
+            throw new RuntimeException("Removal failed!!!\nThe customer with ID № \"" + id + "\" isn't exist!!!");
         }
-        if (isPhoneNumberExist(filePath, phoneNumber)) {
-            throw new RuntimeException("Phone number " + phoneNumber + " already exist!!!");
+
+        FileWriterUtil.overwriteTextToFile(CUSTOMER_FILE_PATH, CSVFormatterUtil.toCSVString(customerList));
+        System.out.println("The customer with ID № \"" + id + "\" was successfully deleted!!!");
+    }
+
+    public Customer editCustomerByID(int id, String firstName, String lastName, String phoneNumber) {
+        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+
+        Customer targetCustomer = getCustomerByID(id);
+
+        if(!targetCustomer.getPhoneNumber().equals(phoneNumber)
+        ){
+            validatePhoneNumber(phoneNumber);
         }
-        if (!EntityIDService.isIDExist(filePath, id, new CustomerMapper())) {
-            throw new RuntimeException("ERROR!\n Customer with id № " + id + " not found!!!");
-        }
-        Integer index = null;
+        /*Customer targetCustomer = customerList.stream()
+                .filter(customer -> customer.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("ERROR!\n Customer with id № " + id + " not found!!!"));*/
         for (Customer customer : customerList) {
             if (customer.getId() == id) {
-                index = customerList.indexOf(customer);
-            }
-            if (isPhoneNumberExist(filePath, phoneNumber)) {
-                throw new RuntimeException("Phone number " + phoneNumber + " already exist!!!");
+                targetCustomer = customer;
             }
         }
-        customerList.set(index, new Customer(
-                id,
-                firstName,
-                lastName,
-                phoneNumber));
+        if (targetCustomer == null) {
+            throw new RuntimeException("Edition failed!!!\n Customer with id № " + id + " not found!!!");
+        }
+        targetCustomer.setPhoneNumber(phoneNumber);
+        targetCustomer.setName(firstName);
+        targetCustomer.setLastName(lastName);
 
-        FileWriterUtil.overwriteTextToFile(filePath, CSVFormatterUtil.toCSVStringNoFormat(customerList));
+        FileWriterUtil.overwriteTextToFile(CUSTOMER_FILE_PATH, CSVFormatterUtil.toCSVString(customerList));
+        System.out.println("The customer with ID № \"" + id + "\" was successfully edited!!!");
+        return targetCustomer;
     }
 }
 

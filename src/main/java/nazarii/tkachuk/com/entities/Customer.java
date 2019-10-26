@@ -11,6 +11,11 @@ public class Customer extends Person implements CSVSerializable {
         super(id);
     }
 
+    public Customer(String name, String lastName, String phoneNumber) {
+        super(null, name, lastName);
+        this.phoneNumber = phoneNumber;
+    }
+
     public Customer(Integer id, String name, String lastName, String phoneNumber) {
         super(id, name, lastName);
         this.phoneNumber = phoneNumber;
@@ -24,8 +29,6 @@ public class Customer extends Person implements CSVSerializable {
         this.phoneNumber = phoneNumber;
     }
 
-
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -37,12 +40,12 @@ public class Customer extends Person implements CSVSerializable {
     }
 
     @Override
-    public String toCSVWithFormatString() {
+    public String toCSVFormattedString() {
         return String.format(CSVFormats.CUSTOMER.getFormatValue(), id+",", name +",", lastName+",",  phoneNumber);
     }
 
     @Override
-    public String toCSVFileString() {
+    public String toCSVString() {
         return id + "," + name + "," + lastName + "," +  phoneNumber+"\n";
     }
 

@@ -3,13 +3,14 @@ package nazarii.tkachuk.com.entities;
 import nazarii.tkachuk.com.enums.CSVFormats;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Order extends EntityID implements CSVSerializable {
     private Integer id;
-    private LocalDate dateOfOrder;
+    private LocalDate orderDate;
     private Integer quantity;
     private Customer customer;
     private Product product;
@@ -17,9 +18,9 @@ public class Order extends EntityID implements CSVSerializable {
     private Integer productID;
     private BigDecimal price;
 
-    public Order(int id, LocalDate dateOfOrder, Integer quantity, Customer customer, Product product) {
+    public Order(int id, LocalDate orderDate, Integer quantity, Customer customer, Product product) {
         this.id = id;
-        this.dateOfOrder = dateOfOrder;
+        this.orderDate = orderDate;
         this.quantity = quantity;
         this.customer = customer;
         this.product = product;
@@ -28,15 +29,26 @@ public class Order extends EntityID implements CSVSerializable {
         this.price = BigDecimal.valueOf(quantity).multiply(product.getPrice());
     }
 
-    public Order(int id, LocalDate dateOfOrder, Integer quantity, Customer customer, Product product,BigDecimal price) {
-        this.id = id;
-        this.dateOfOrder = dateOfOrder;
+    public Order(LocalDate orderDate, Integer quantity, Customer customer, Product product, BigDecimal price) {
+        this.id = null;
+        this.orderDate = orderDate;
         this.quantity = quantity;
         this.customer = customer;
         this.product = product;
         this.customerID = customer.getId();
         this.productID = product.getId();
-        this.price = price;
+        this.price = price.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    public Order(int id, LocalDate orderDate, Integer quantity, Customer customer, Product product, BigDecimal price) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.quantity = quantity;
+        this.customer = customer;
+        this.product = product;
+        this.customerID = customer.getId();
+        this.productID = product.getId();
+        this.price = price.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public Integer getId() {
@@ -47,12 +59,12 @@ public class Order extends EntityID implements CSVSerializable {
         this.id = id;
     }
 
-    public LocalDate getDateOfOrder() {
-        return dateOfOrder;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setDateOfOrder(LocalDate dateTime) {
-        this.dateOfOrder = dateTime;
+    public void setOrderDate(LocalDate dateTime) {
+        this.orderDate = dateTime;
     }
 
     public Integer getQuantity() {
@@ -83,7 +95,7 @@ public class Order extends EntityID implements CSVSerializable {
     public String toString() {
         return "Order{" +
                 "ID=" + id +
-                ", dateTime=" + dateOfOrder +
+                ", dateTime=" + orderDate +
                 ", quantity=" + quantity +
                 ", customerID=" + customerID +
                 ", productID=" + productID +
@@ -91,14 +103,14 @@ public class Order extends EntityID implements CSVSerializable {
     }
 
     @Override
-    public String toCSVWithFormatString() {
-        return String.format(CSVFormats.ORDER.getFormatValue(),  id + ",",dateOfOrder + ",",
+    public String toCSVFormattedString() {
+        return String.format(CSVFormats.ORDER.getFormatValue(),  id + ",", orderDate + ",",
                 quantity + ",", customerID + ",", productID  + ",", price);
     }
 
     @Override
-    public String toCSVFileString() {
-        return id + ","+ dateOfOrder + ","+ quantity + "," + customerID + "," + productID  + "," + price+"\n";
+    public String toCSVString() {
+        return id + ","+ orderDate + ","+ quantity + "," + customerID + "," + productID  + "," + price+"\n";
     }
 
     @Override
@@ -106,8 +118,7 @@ public class Order extends EntityID implements CSVSerializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return getId().equals(order.getId()) &&
-                getDateOfOrder().equals(order.getDateOfOrder()) &&
+        return getOrderDate().equals(order.getOrderDate()) &&
                 getQuantity().equals(order.getQuantity()) &&
                 customerID.equals(order.customerID) &&
                 productID.equals(order.productID) &&
@@ -116,7 +127,7 @@ public class Order extends EntityID implements CSVSerializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDateOfOrder(), getQuantity(), customerID, productID, price);
+        return Objects.hash(getId(), getOrderDate(), getQuantity(), customerID, productID, price);
     }
 
     private class DateofOrder {

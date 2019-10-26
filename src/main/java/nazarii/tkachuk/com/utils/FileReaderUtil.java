@@ -34,8 +34,7 @@ public final class FileReaderUtil {
     private static <T extends CSVSerializable> List<T> convertToObjects(List<String> data, CSVMapper<T> mapper) {
         List<T> list = new ArrayList<>();
         for (String objectData : data) {
-            T t;
-            t = mapper.mapFromCSV(objectData);
+            T t = mapper.mapFromCSV(objectData);
             list.add(t);
         }
         return list;
@@ -60,8 +59,19 @@ public final class FileReaderUtil {
         return stringBuffer.toString();
 
     }
+
+    public static List<String> readStringFromFile2(String filepath) {
+        List<String> strings = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(new FileReader(filepath))) {
+
+            while (scanner.hasNextLine()) {
+                strings.add(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return strings;
+    }
 }
-
-
-
-

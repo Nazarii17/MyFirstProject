@@ -2,55 +2,50 @@ package nazarii.tkachuk.com.services;
 
 import nazarii.tkachuk.com.entities.EntityID;
 import nazarii.tkachuk.com.entities.Nameble;
+import nazarii.tkachuk.com.entities.Order;
 import nazarii.tkachuk.com.mappers.CSVMapper;
 import nazarii.tkachuk.com.utils.FileReaderUtil;
 import nazarii.tkachuk.com.utils.FileWriterUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class EntityIDService {
 
-    public static String getIDFilePath(String filePath) {
-        char[] chars = filePath.toCharArray();
-        StringBuffer fileIDPath = new StringBuffer(filePath);
-        return fileIDPath.insert(chars.length - 4, "ID").toString();
+    private String entityFilePath;
+    private String entityIdFilePath;
+
+    public EntityIDService(String entityFilePath) {
+        this.entityFilePath = entityFilePath;
+        this.entityIdFilePath = getIDFilePath(entityFilePath);
     }
 
-    public static String findMaxID(List<EntityID> list) {
-        ArrayList<Integer> IDList = new ArrayList<>();
-
-        if (list.isEmpty()) {
-            return "0" + "\n";
-        } else for (EntityID id : list) {
-            IDList.add(id.getId());
-        }
-        return Collections.max(IDList).toString() + "\n";
+    public String getIDFilePath(String filePath) {
+        return filePath.substring(0, filePath.length() - 4) + "ID.csv";
     }
 
-    public static void writeMaxIDFromListToFile(String filePath, List<? extends EntityID> list) {
-        findMaxID((List<EntityID>) list);
-        FileWriterUtil.overwriteTextToFile(filePath, findMaxID((List<EntityID>) list));
+    private int generateId(String filePath) {
+        int id = Integer.parseInt(FileReaderUtil.readStringFromFile2(filePath).get(0).trim());
+        final Integer nextId = ++id;
+        FileWriterUtil.overwriteTextToFile(filePath, nextId.toString());
+        return nextId;
     }
 
-    public static <T extends EntityID> void createFileWithMaxID(String filePath, CSVMapper<T> csvMapper) {
-
-        List<T> list = FileReaderUtil.readObjects(filePath, csvMapper);
-
-        writeMaxIDFromListToFile(getIDFilePath(filePath), list);
+    public int generateId() {
+        return generateId(entityIdFilePath);
     }
 
-    public static int generateIDFromFile(String filePath) {
-        int id = Integer.parseInt(FileReaderUtil.readStringFromFile(filePath).trim());
-        return id + 1;
-    }
-
-    public static <T extends EntityID> Boolean isIDExist(String filePath, Integer id, CSVMapper csvMapper) {
+    public <T extends EntityID> Boolean isIDExist(String filePath, Integer id, CSVMapper csvMapper) {
         List<T> IDList = FileReaderUtil.readObjects(filePath, csvMapper);
-        for (T t : IDList) {
+        return isIDExist(IDList, id);
+    }
+
+    public <T extends EntityID> Boolean isIDExist(List<T> entities, Integer id) {
+        for (T t : entities) {
             if (t.getId().equals(id)) {
                 return true;
             }
@@ -58,18 +53,14 @@ public class EntityIDService {
         return false;
     }
 
-    public static boolean isPriceNotZero(BigDecimal money) {
+    public boolean isPriceNotZero(BigDecimal money) {
         //Validate if money not 0
         if (money.compareTo(BigDecimal.ZERO) == 0) {
             return true;
         } else return false;
-//        createFileWithMaxID();
-//        money.compareTo(BigDecimal.ZERO) == 0 // true
-//        new BigDecimal("0.00").compareTo(BigDecimal.ZERO) == 0 // true
-
     }
 
-    public static <T extends Nameble> boolean isNameExist(String filePath, String name, CSVMapper<T> csvMapper) {
+    public <T extends Nameble> boolean isNameExist(String filePath, String name, CSVMapper<T> csvMapper) {
 
         List<T> list = FileReaderUtil.readObjects(filePath, csvMapper);
 
@@ -78,14 +69,37 @@ public class EntityIDService {
                 return true;
             }
         }
-
         return false;
     }
 
-    public static Boolean isFileExist(String filePath) {
+    public LocalDate buildDate(Integer year, Integer month, Integer day) {
+
+        if (year < 1945 || year > LocalDate.now().getYear()) {
+            throw new RuntimeException("The year \"" + year + "\" is invalid!!!");
+        }
+        if (month < 0 || month > 12) {
+            throw new RuntimeException("The month \"" + month + "\" is invalid!!!");
+        }
+        if (day < 0 || day > 31) {
+            throw new RuntimeException("The day \"" + day + "\" is invalid!!!");
+        }
+        return LocalDate.of(year, month, day);
+    }
+
+    public Boolean isFileExist(String filePath) {
         File file = new File(filePath);
         if (file.exists()) {
             return true;
+        }
+        return false;
+    }
+
+    public <T extends Order> Boolean isDateExist(List<T> entities, Integer year, Integer month, Integer day){
+        LocalDate checkedDate = buildDate(year,month,day);
+        for (T t: entities){
+            if (t.getOrderDate().equals(checkedDate)){
+                return true;
+            }
         }
         return false;
     }

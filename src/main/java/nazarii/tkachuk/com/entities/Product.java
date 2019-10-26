@@ -13,6 +13,13 @@ public class Product extends Nameble implements CSVSerializable {
         this.id = id;
     }
 
+    public Product(String name, BigDecimal price, String info) {
+        this.id = null;
+        this.name = name;
+        this.price = price;
+        this.info = info;
+    }
+
     public Product(Integer id, String name, BigDecimal price, String info) {
         this.id = id;
         this.name = name;
@@ -63,12 +70,12 @@ public class Product extends Nameble implements CSVSerializable {
     }
 
     @Override
-    public String toCSVWithFormatString() {
+    public String toCSVFormattedString() {
         return String.format(CSVFormats.PRODUCT.getFormatValue(), id + ",", name + ",", price + ",", info);
     }
 
     @Override
-    public String toCSVFileString() {
+    public String toCSVString() {
         return id + "," + name + "," +  price + "," + info+"\n";
     }
 }

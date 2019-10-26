@@ -66,12 +66,12 @@ public class Person extends Nameble {
     }
 
     @Override
-    public String toCSVWithFormatString() {
+    public String toCSVFormattedString() {
         return null;
     }
 
     @Override
-    public String toCSVFileString() {
+    public String toCSVString() {
         return null;
     }
 }

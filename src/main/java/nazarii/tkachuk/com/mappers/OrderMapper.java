@@ -13,16 +13,19 @@ public class OrderMapper implements CSVMapper<Order> {
     public Order mapFromCSV(String s) {
         String[] strings = s.split(",");
         String[] stringsDate = strings[1].split("-");
-
-        return new Order(Integer.parseInt(strings[0].trim()),
-                LocalDate.of(
+        
+        LocalDate date = LocalDate.of(
                 Integer.parseInt(stringsDate[0].trim()),
                 Integer.parseInt(stringsDate[1].trim()),
-                Integer.parseInt(stringsDate[2].trim())),
+                Integer.parseInt(stringsDate[2].trim()));
+
+        return new Order(
+                Integer.parseInt(strings[0].trim()),
+                date,
                 Integer.parseInt(strings[2].trim()),
                 new Customer(Integer.parseInt(strings[3].trim())),
                 new Product(Integer.parseInt(strings[4].trim())),
-                BigDecimal.valueOf(Double.parseDouble(strings[5].trim())).setScale(2)
+                new BigDecimal(strings[5].trim())
         );
     }
 }

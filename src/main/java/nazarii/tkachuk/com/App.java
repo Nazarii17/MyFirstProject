@@ -3,11 +3,11 @@ package nazarii.tkachuk.com;
 import nazarii.tkachuk.com.entities.Customer;
 import nazarii.tkachuk.com.entities.Order;
 import nazarii.tkachuk.com.entities.Product;
+import nazarii.tkachuk.com.providera.PropertiesProvider;
 import nazarii.tkachuk.com.services.CustomerService;
+import nazarii.tkachuk.com.services.EntityIDService;
 import nazarii.tkachuk.com.services.OrderService;
 import nazarii.tkachuk.com.services.ProductService;
-import nazarii.tkachuk.com.utils.CSVFormatterUtil;
-import nazarii.tkachuk.com.utils.FileWriterUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,11 +17,17 @@ import java.util.ArrayList;
 public class App {
     public static String filePath = "cusomers.csv";
 
+
     public static void main(String[] args) {
+
 
         ArrayList<Customer> customers = new ArrayList<>();
         ArrayList<Product> products = new ArrayList<>();
         ArrayList<Order> orders = new ArrayList<>();
+
+        CustomerService customerService = new CustomerService();
+        ProductService productService = new ProductService();
+        OrderService orderService = new OrderService();
 
         Customer customer1 = new Customer(1, "Jack", "Bush", "503730412");
         Customer customer2 = new Customer(2, "Mary", "Bush", "536546126");
@@ -62,33 +68,54 @@ public class App {
         orders.add(order3);
         orders.add(order4);
 
-        FileWriterUtil.writeTextToFile("products.csv", CSVFormatterUtil.toCSVStringNoFormat(products));
-        FileWriterUtil.writeTextToFile("orders.csv", CSVFormatterUtil.toCSVStringNoFormat(orders));
-        FileWriterUtil.writeTextToFile("customers.csv", CSVFormatterUtil.toCSVStringNoFormat(customers));
+//        FileWriterUtil.writeToFile("products.csv", CSVFormatterUtil.toCSVString(products));
+//        FileWriterUtil.writeToFile("orders.csv", CSVFormatterUtil.toCSVString(orders));
+//        FileWriterUtil.writeToFile("customers.csv", CSVFormatterUtil.toCSVString(customers));
+//
+//
+//        Product newProduct = ProductService.createNewProduct("product.csv","Жорсткезне єбашиво++",
+//                20.40,"Мама мене їбошить");
+//        products.add(newProduct);
+//        FileWriterUtil.writeToFile("product.csv", newProduct.toCSVString());
+//        Product newProduct1 = ProductService.createNewProduct("products.csv","Коломийський грьоб",
+//                4.40,"Тату мене їбошить");
+//        products.add(newProduct1);
+//        FileWriterUtil.writeToFile("products.csv", newProduct1.toCSVString());
+//
+//
+//        Order newOrder = OrderService.createNewOrder("orders.csv", 993,11,30,1000,3,5);
+//        orders.add(newOrder);
+//        FileWriterUtil.writeToFile("orders.csv",newOrder.toCSVString());
+//
+//
+//        CustomerService.deleteCustomerByID("customers.csv",7);
+//        CustomerService.editCustomerByID("customers.csv",8,"Nigga", "Corn","981674230" );
+//
+//        Customer newCustomer = customerService.createNewCustomer(
+//                "Alah","Babah","981674245");
+//        customers.add(newCustomer);
+
+//        System.out.println(new PropertiesProvider().getPropertiesValue("FILE.NAME_1"));
+//        customerService.deleteCustomerByID(10);
+
+//        productService.editProductByID(5,"Клузів", 1.0,"Файно");
+
+//        System.out.println(productService.getProductByName("Клузів+"));
+
+//        productService.createNewProduct("Клузів+",30.00,"Файно");
+
+//        customerService.editCustomerByID(
+//                11,
+//                "Alqqqqah",
+//                "Bya",
+//                "981674111");
+
+//        orderService.createNewOrder(1999,10,31,12,2,2);
+        System.out.println(orderService.getOrdererByDate(1999, 10, 31));
 
 
-        Product newProduct = ProductService.createNewProduct("product.csv","Жорсткезне єбашиво++",
-                20.40,"Мама мене їбошить");
-        products.add(newProduct);
-        FileWriterUtil.writeTextToFile("product.csv", newProduct.toCSVFileString());
-        Product newProduct1 = ProductService.createNewProduct("products.csv","Коломийський грьоб",
-                4.40,"Тату мене їбошить");
-        products.add(newProduct1);
-        FileWriterUtil.writeTextToFile("products.csv", newProduct1.toCSVFileString());
+//     orderService.editOrderByID(9,1996,10,15,50,2,2);
 
-
-        Order newOrder = OrderService.createNewOrder("orders.csv", 993,11,30,1000,3,5);
-        orders.add(newOrder);
-        FileWriterUtil.writeTextToFile("orders.csv",newOrder.toCSVFileString());
-
-
-        CustomerService.deleteCustomerByID("customers.csv",7);
-        CustomerService.editCustomerByID("customers.csv",8,"Nigga", "Corn","981674230" );
-
-        Customer newCustomer = CustomerService.createNewCustomer("customers.csv",
-                "Alah","Babah","981674239");
-        customers.add(newCustomer);
-        FileWriterUtil.writeTextToFile("customers.csv", newCustomer.toCSVFileString());
 
 
     }

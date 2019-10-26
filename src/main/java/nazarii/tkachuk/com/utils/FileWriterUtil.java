@@ -22,7 +22,7 @@ public final class FileWriterUtil {
         }
         return filePath;
     }
-    //    public void writeTextToFile(String text) {
+    //    public void writeToFile(String text) {
 //
 //        FileWriter fileWriter;
 //        BufferedWriter bufferedWriter;
@@ -37,7 +37,7 @@ public final class FileWriterUtil {
 //        }
 //        printWriter.close();
 //    }
-//    public void writeTextToFile(FileType fileType, Object o, Object[] objects) {
+//    public void writeToFile(FileType fileType, Object o, Object[] objects) {
 //        FileWriter fileWriter;
 //        BufferedWriter bufferedWriter;
 //        PrintWriter printWriter = null;
@@ -61,17 +61,17 @@ public final class FileWriterUtil {
 //        }
 //        printWriter.close();
 //    }
-//    public void writeTextToFile(String filePath, List<? extends CSVSerializable> objects, String format) {
+//    public void writeToFile(String filePath, List<? extends CSVSerializable> objects, String format) {
 //
 //        try (PrintWriter writer = new PrintWriter(filePath)) {
 //
-//            writer.print(CSVFormatterUtil.toCSVWithFormatString(objects, format));
+//            writer.print(CSVFormatterUtil.toCSVFormattedString(objects, format));
 //
 //        } catch (FileNotFoundException e) {
 //            e.printStackTrace();
 //        }
 //    }
-//    public void writeTextToFile(String filePath, String content) {
+//    public void writeToFile(String filePath, String content) {
 //
 //        createFileIfNotExists(filePath);
 //
@@ -83,7 +83,7 @@ public final class FileWriterUtil {
 //            e.printStackTrace();
 //        }
 //    }
-    public static void  writeTextToFile(String filePath, String content) {
+    public static void writeToFile(String filePath, String content) {
 
         createFileIfNotExists(filePath);
 
