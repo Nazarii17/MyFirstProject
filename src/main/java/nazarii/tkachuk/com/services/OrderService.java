@@ -26,6 +26,10 @@ public class OrderService {
         entityIDService = new EntityIDService(orderFilePath);
     }
 
+    public String getORDER_FILE_PATH() {
+        return orderFilePath;
+    }
+
     private ProductService productService = new ProductService();
     private CustomerService customerService = new CustomerService();
 
