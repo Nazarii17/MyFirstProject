@@ -3,7 +3,7 @@ package nazarii.tkachuk.com.entities;
 import nazarii.tkachuk.com.enums.CSVFormats;
 import java.math.BigDecimal;
 
-public class Product extends Nameble implements CSVSerializable {
+public class Product extends EntityID implements CSVSerializable {
     private Integer id;
     private String name;
     private BigDecimal price;

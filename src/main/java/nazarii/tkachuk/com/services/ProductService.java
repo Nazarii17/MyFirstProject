@@ -2,6 +2,7 @@ package nazarii.tkachuk.com.services;
 
 import nazarii.tkachuk.com.entities.Product;
 import nazarii.tkachuk.com.mappers.ProductMapper;
+import nazarii.tkachuk.com.providers.PropertiesProvider;
 import nazarii.tkachuk.com.utils.CSVFormatterUtil;
 import nazarii.tkachuk.com.utils.FileReaderUtil;
 import nazarii.tkachuk.com.utils.FileWriterUtil;
@@ -9,58 +10,48 @@ import nazarii.tkachuk.com.utils.FileWriterUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductService {
 
     private EntityIDService entityIDService;
 
-    private final String PRODUCT_FILE_PATH = "products.csv";
+    private String productFilePath;
+    private final String PRODUCT_PROPERTY_NAME = "result.file.name.products";
 
     public ProductService() {
-        entityIDService = new EntityIDService(PRODUCT_FILE_PATH);
+        productFilePath = PropertiesProvider.getProperty(PRODUCT_PROPERTY_NAME);
+        entityIDService = new EntityIDService(productFilePath);
     }
 
     public String getPRODUCT_FILE_PATH() {
-        return PRODUCT_FILE_PATH;
+        return productFilePath;
     }
 
     public Product getProductById(int id) {
-        List<Product> productList = FileReaderUtil.readObjects(PRODUCT_FILE_PATH, new ProductMapper());
+
+
+        List<Product> productList = FileReaderUtil.readObjects(productFilePath, new ProductMapper());
 
         if (!entityIDService.isIDExist(productList, id)) {
             throw new RuntimeException("The product with ID № \"" + id + "\" isn't exist!!!\"");
         }
-        Product correctOne = null;
         for (Product product : productList) {
             if (product.getId() == id) {
-                correctOne = product;
+                return product;
             }
         }
-        return correctOne;
-    }
-
-    private int getIndexById(List<Product> list, int id) {
-
-        if (!entityIDService.isIDExist(list, id)) {
-            throw new RuntimeException("The product with ID № \"" + id + "\" isn't exist!!!\"");
-        }
-        Integer correctOne = null;
-        for (Product product : list) {
-            if (product.getId() == id) {
-                correctOne = list.indexOf(product);
-            }
-        }
-        return correctOne;
+        return null;
     }
 
     public Product getProductByName(String name) {
-        List<Product> customerList = FileReaderUtil.readObjects(PRODUCT_FILE_PATH, new ProductMapper());
+        List<Product> productList = FileReaderUtil.readObjects(productFilePath, new ProductMapper());
 
-        if (!entityIDService.isNameExist(PRODUCT_FILE_PATH, name, new ProductMapper())) {
+        if (!isNameExist(productList, name)) {
             throw new RuntimeException("The product \"" + name + "\" isn't exist!!!\"");
         }
         Product correctOne = null;
-        for (Product product : customerList) {
+        for (Product product : productList) {
             if (product.getName().equals(name)) {
                 correctOne = product;
             }
@@ -85,7 +76,7 @@ public class ProductService {
         if (entityIDService.isPriceNotZero(new BigDecimal(price))) {
             throw new RuntimeException("Price can't be zero!!!");
         }
-        if (entityIDService.isNameExist(PRODUCT_FILE_PATH, name, new ProductMapper())) {
+        if (isNameExist(productFilePath, name)) {
             throw new RuntimeException("The product \"" + name.toUpperCase() + "\" is exist!!!");
         }
     }
@@ -94,40 +85,48 @@ public class ProductService {
         final int id = entityIDService.generateId();
 
         product.setId(id);
-        FileWriterUtil.writeToFile(PRODUCT_FILE_PATH, product.toCSVString());
+        FileWriterUtil.writeToFile(productFilePath, product.toCSVString());
 
         return product;
     }
 
     public void deleteProductByID(int id) {
-        List<Product> productList = FileReaderUtil.readObjects(PRODUCT_FILE_PATH, new ProductMapper());
-        if (entityIDService.isIDExist(productList, id)) {
-            productList.remove(getIndexById(productList, id));
-        } else {
-            throw new RuntimeException("\"Removal failed!!!\nThe product with ID № \"" + id + "\" isn't exist!!!");
+        List<Product> productList = FileReaderUtil.readObjects(productFilePath, new ProductMapper());
+
+        boolean removed = productList.removeIf(product -> product.getId().equals(id));
+
+        if (!removed) {
+            throw new RuntimeException("\"Removal failed!!!\nThe product with ID \"" + id + "\" isn't exist!!!");
         }
-        FileWriterUtil.overwriteTextToFile(PRODUCT_FILE_PATH, CSVFormatterUtil.toCSVString(productList));
+
+        FileWriterUtil.overwriteTextToFile(productFilePath, CSVFormatterUtil.toCSVString(productList));
         System.out.println("The product with ID № \"" + id + "\" was successfully deleted!!!");
     }
 
     public void editProductByID(int id, String name, Double price, String info) {
-        List<Product> productList = FileReaderUtil.readObjects(PRODUCT_FILE_PATH, new ProductMapper());
+        List<Product> productList = FileReaderUtil.readObjects(productFilePath, new ProductMapper());
 
-        Product targetProduct = getProductById(id);
+//        Product targetProduct = getProductById(id);
 
+        Product targetProduct = productList.stream()
+                .filter(product -> product.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("The product with ID № \"" + id + "\" isn't exist!!!\""));
+//        Product targetProduct = null;
+//        for (Product product : productList) {
+//            if (product.getId() == id) {
+//                targetProduct = product;
+//            }
+//        }
+//        if (targetProduct == null) {
+//            throw new RuntimeException("Edition failed!!!\n Product with id № " + id + " not found!!!");
+//        }
         if (!targetProduct.getName().equals(name)) {
             validateProductData(name, price);
         } else if (price == 0) {
             throw new RuntimeException("Price can't be zero!!!");
         }
-        for (Product product : productList) {
-            if (product.getId() == id) {
-                targetProduct = product;
-            }
-        }
-        if (targetProduct == null) {
-            throw new RuntimeException("Edition failed!!!\n Product with id № " + id + " not found!!!");
-        }
+
         targetProduct.setName(name);
         targetProduct.setPrice(new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN));
         targetProduct.setInfo(info);
@@ -142,6 +141,28 @@ public class ProductService {
 //        }
 //        productList.set(index, new Product(id, name, new BigDecimal(price).setScale(2, RoundingMode.HALF_EVEN), info));
         System.out.println("The product with ID № \"" + id + "\" was successfully edited!!!");
-        FileWriterUtil.overwriteTextToFile(PRODUCT_FILE_PATH, CSVFormatterUtil.toCSVString(productList));
+        FileWriterUtil.overwriteTextToFile(productFilePath, CSVFormatterUtil.toCSVString(productList));
+    }
+
+    public boolean isNameExist(String filePath, String name) {
+
+        List<Product> list = FileReaderUtil.readObjects(filePath, new ProductMapper());
+
+        for (Product product : list) {
+            if (product.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNameExist(List<Product> products, String name) {
+
+        for (Product product : products) {
+            if (product.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

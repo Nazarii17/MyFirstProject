@@ -1,16 +1,13 @@
 package nazarii.tkachuk.com.services;
 
 import nazarii.tkachuk.com.entities.EntityID;
-import nazarii.tkachuk.com.entities.Nameble;
 import nazarii.tkachuk.com.entities.Order;
 import nazarii.tkachuk.com.mappers.CSVMapper;
 import nazarii.tkachuk.com.utils.FileReaderUtil;
 import nazarii.tkachuk.com.utils.FileWriterUtil;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EntityIDService {
@@ -62,18 +59,6 @@ public class EntityIDService {
         } else return false;
     }
 
-    public <T extends Nameble> boolean isNameExist(String filePath, String name, CSVMapper<T> csvMapper) {
-
-        List<T> list = FileReaderUtil.readObjects(filePath, csvMapper);
-
-        for (T t : list) {
-            if (t.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public LocalDate buildDate(Integer year, Integer month, Integer day) {
 
         if (year < 1945 || year > LocalDate.now().getYear()) {
@@ -96,29 +81,18 @@ public class EntityIDService {
         return false;
     }
 
-    public void prepareInitialFiles(String customerFilePath, String productFilePath, String orderFilePath){
-
-        List<String> filePaths = new ArrayList<>();
-        filePaths.add(customerFilePath);
-        filePaths.add(productFilePath);
-        filePaths.add(orderFilePath);
+    public void prepareInitialFiles(List<String> filePaths){
 
         for (String filePath: filePaths ){
             if(!isFileExist(filePath)){
                 FileWriterUtil.createFileIfNotExists(filePath);
 //                throw new RuntimeException("File \""+ filePath + "\" not found!!!");
             }
-        }
-    }
-
-    public <T extends Order> Boolean isDateExist(List<T> entities, Integer year, Integer month, Integer day){
-        LocalDate checkedDate = buildDate(year,month,day);
-        for (T t: entities){
-            if (t.getOrderDate().equals(checkedDate)){
-                return true;
+            String idFilePath = getIDFilePath(filePath);
+            if(!isFileExist(idFilePath)){
+                FileWriterUtil.createFileIfNotExists(idFilePath);
             }
         }
-        return false;
     }
 }
 

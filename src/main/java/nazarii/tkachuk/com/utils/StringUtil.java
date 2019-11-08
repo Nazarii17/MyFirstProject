@@ -21,4 +21,11 @@ public final class StringUtil {
         }
         return sb.append(finalList.get(finalList.size()-1)).toString();
     }
+
+    public static String[] stringTrim(String[] strings){
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = strings[i].trim();
+        }
+        return strings;
+    }
 }

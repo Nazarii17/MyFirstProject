@@ -2,6 +2,7 @@ package nazarii.tkachuk.com.services;
 
 import nazarii.tkachuk.com.entities.Customer;
 import nazarii.tkachuk.com.mappers.CustomerMapper;
+import nazarii.tkachuk.com.providers.PropertiesProvider;
 import nazarii.tkachuk.com.utils.CSVFormatterUtil;
 import nazarii.tkachuk.com.utils.FileReaderUtil;
 import nazarii.tkachuk.com.utils.FileWriterUtil;
@@ -13,18 +14,30 @@ public class CustomerService {
 
     private EntityIDService entityIDService;
 
-    private final String CUSTOMER_FILE_PATH = "customers.csv";
+    private String customerFilePath;
+    private final String CUSTOMER_PROPERTY_NAME = "result.file.name.customers";
 
     public CustomerService() {
-        entityIDService = new EntityIDService(CUSTOMER_FILE_PATH);
+        customerFilePath = PropertiesProvider.getProperty(CUSTOMER_PROPERTY_NAME);
+        entityIDService = new EntityIDService(customerFilePath);
     }
 
-    public String getCUSTOMER_FILE_PATH() {
-        return CUSTOMER_FILE_PATH;
+    public String getCustomerFilePath() {
+        return customerFilePath;
     }
 
     private Boolean isPhoneNumberExist(String phoneNumber) {
-        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+        List<Customer> customerList = FileReaderUtil.readObjects(customerFilePath, new CustomerMapper());
+
+        for (Customer customer : customerList) {
+            if (customer.getPhoneNumber().equals(phoneNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Boolean isPhoneNumberExist(List<Customer> customerList, String phoneNumber) {
 
         for (Customer customer : customerList) {
             if (customer.getPhoneNumber().equals(phoneNumber)) {
@@ -35,7 +48,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerByID(int id) {
-        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+        List<Customer> customerList = FileReaderUtil.readObjects(customerFilePath, new CustomerMapper());
 
         if (!entityIDService.isIDExist(customerList,id)){
             throw new RuntimeException("The customer with ID № \"" + id + "\" isn't exist!!!\"");
@@ -50,10 +63,11 @@ public class CustomerService {
 
     public Customer getCustomerByPhoneNumber(String phoneNumber) {
 
-        if (!isPhoneNumberExist(phoneNumber)) {
+        List<Customer> customerList = FileReaderUtil.readObjects(customerFilePath, new CustomerMapper());
+
+        if (!isPhoneNumberExist(customerList, phoneNumber)) {
             throw new RuntimeException("Phone number " + phoneNumber + " isn't exist!!!");
         }
-        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
         Customer correctOne = null;
         for (Customer customer : customerList) {
             if (customer.getPhoneNumber().equals(phoneNumber)) {
@@ -87,7 +101,7 @@ public class CustomerService {
 
         customer.setId(id);
 
-        FileWriterUtil.writeToFile(CUSTOMER_FILE_PATH, customer.toCSVString());
+        FileWriterUtil.writeToFile(customerFilePath, customer.toCSVString());
 
         return customer;
     }
@@ -97,7 +111,7 @@ public class CustomerService {
     }
 
     public void deleteCustomerByID(int id) {
-        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+        List<Customer> customerList = FileReaderUtil.readObjects(customerFilePath, new CustomerMapper());
         if (entityIDService.isIDExist(customerList, id)) {
             Customer customer = getCustomerByID(id);
             customerList.remove(customer);
@@ -105,12 +119,12 @@ public class CustomerService {
             throw new RuntimeException("Removal failed!!!\nThe customer with ID № \"" + id + "\" isn't exist!!!");
         }
 
-        FileWriterUtil.overwriteTextToFile(CUSTOMER_FILE_PATH, CSVFormatterUtil.toCSVString(customerList));
+        FileWriterUtil.overwriteTextToFile(customerFilePath, CSVFormatterUtil.toCSVString(customerList));
         System.out.println("The customer with ID № \"" + id + "\" was successfully deleted!!!");
     }
 
     public Customer editCustomerByID(int id, String firstName, String lastName, String phoneNumber) {
-        List<Customer> customerList = FileReaderUtil.readObjects(CUSTOMER_FILE_PATH, new CustomerMapper());
+        List<Customer> customerList = FileReaderUtil.readObjects(customerFilePath, new CustomerMapper());
 
         Customer targetCustomer = getCustomerByID(id);
 
@@ -134,7 +148,7 @@ public class CustomerService {
         targetCustomer.setName(firstName);
         targetCustomer.setLastName(lastName);
 
-        FileWriterUtil.overwriteTextToFile(CUSTOMER_FILE_PATH, CSVFormatterUtil.toCSVString(customerList));
+        FileWriterUtil.overwriteTextToFile(customerFilePath, CSVFormatterUtil.toCSVString(customerList));
         System.out.println("The customer with ID № \"" + id + "\" was successfully edited!!!");
         return targetCustomer;
     }
