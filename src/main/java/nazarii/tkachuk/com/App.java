@@ -125,7 +125,6 @@ public class App {
 
 //        System.out.println(StringUtil.stringTrim("1   ,Mary   ,Bush  ,536546126  "));
 
-
         System.out.println(productService.getProductByName("Клуewзів+"));
 
     }
